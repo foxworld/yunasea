@@ -7,4 +7,7 @@
     <string name="SMS_RECEIVED">android.provider.Telephony.SMS_RECEIVED</string>
     <string name="alert_sms_title">YunaSea 공지</string>
     <string name="title_activity_notices">공지사항</string>
+    <string name="NOTIFICATION_ID">0xffff0001</string>
+    <string name="notices_url">http://best.mqoo.com/</string>
+    <string name="BROADCASET_NOTICE">kr.co.ksnet.yunasea.intent.ACTION_BROADCAST_NOTICE</string>
 </resources>

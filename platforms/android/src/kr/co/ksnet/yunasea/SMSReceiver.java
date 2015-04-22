@@ -1,5 +1,8 @@
 package kr.co.ksnet.yunasea;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +42,25 @@ public class SMSReceiver extends BroadcastReceiver {
                     }
                     Toast.makeText(context, "**"+context.getString(R.string.alert_sms_title)+"**\n"+sms_body, Toast.LENGTH_LONG).show();
                     //abortBroadcast();
+                    NotificationManager nm = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    Notification notification = new Notification(R.drawable.icon, context.getString(R.string.alert_sms_title), System.currentTimeMillis());
+                    //notification.flags = Notification.FLAG_ONGOING_EVENT;
+                    notification.flags = Notification.FLAG_AUTO_CANCEL;
+
+                    Intent intent_nm = new Intent(context, NoticesActivity.class);
+                    intent_nm.putExtra("SMS_TITLE", context.getString(R.string.alert_sms_title));
+                    intent_nm.putExtra("SMS_BODY" , sms_body);
+                    intent_nm.putExtra("SMS_TIME" , dateformat.format(new Date(msgs[i].getTimestampMillis())));
+                    PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent_nm, 0);
+                    notification.setLatestEventInfo(context, context.getString(R.string.alert_sms_title), sms_body, contentIntent);
+                    nm.notify(context.getString(R.string.NOTIFICATION_ID), 0, notification);
+
+                    Intent intent_sms = new Intent();
+                    intent_sms.setAction(context.getString(R.string.BROADCASET_NOTICE));
+                    intent_sms.putExtra("SMS_TITLE" , context.getString(R.string.alert_sms_title));
+                    intent_sms.putExtra("SMS_BODY" , sms_body);
+                    intent_sms.putExtra("SMS_TIME" , dateformat.format(new Date(msgs[i].getTimestampMillis())));
+                    context.sendBroadcast(intent_sms);
                 }
             }
         }

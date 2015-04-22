@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    <item android:id="@+id/menu_notices"
+        android:title="공지사항"
+        android:orderInCategory="100"
+        android:icon="@android:drawable/ic_menu_agenda"
+        app:showAsAction="never" />
+    <item android:id="@+id/menu_yunasea"
+        android:title="YunaSea"
+        android:orderInCategory="110"
+        android:icon="@android:drawable/ic_menu_more"
+        app:showAsAction="never" />
+</menu>
