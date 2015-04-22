@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Storage Example</title>
+	</head>
+	<body>
+		<div><h1>Storage Example</h1></div>
+		<div><p><input type="button" id="dbcreate" name="button" value="CREATE/INSERT"></p></div>
+		<div><p><input type="button" id="dbselect" name="button" value="SELECT"></p></div>
+		<div id="selectrows">
+		</div>
+		
+		<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+		$( document ).ready(function() {
+	
+			$( "#dbcreate" ).click(function() {
+				console.log( "create click" );
+				var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+				db.transaction(populateDB, errorCB, successCB);			
+			});
+			function populateDB(tx) {
+				tx.executeSql('DROP TABLE IF EXISTS DEMO');
+				tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id unique, data)');
+				tx.executeSql('INSERT INTO DEMO (id, data) VALUES (1, "First row")');
+				tx.executeSql('INSERT INTO DEMO (id, data) VALUES (2, "Second row")');
+			}
+			
+			function errorCB(err) {
+		    alert("Error processing SQL: "+err.code);
+			}
+			
+			function successCB() {
+		    alert("success!");
+			}
+			
+			$( "#dbselect" ).click(function() {
+				console.log( "select click" );
+				var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+				db.transaction(selectDB, function(){
+					console.log(error);
+					alert("Select Fail!" + error);
+					}, 
+					function(){
+						console.log("Success Select!!");	
+					}
+				);			
+			});
+			
+			function selectDB(tx) {
+				tx.executeSql('SELECT * FROM DEMO WHERE id = ?', [1], function(tx, response){
+					var tmp = '<table><tr><th>ID</th><th>DATA</th></tr>';
+					for(var i=0; i < response.rows.length; i++) {
+						tmp += '<tr><td>'+response.rows.item(i).id+'</td><td>'+response.rows.item(i).data+'</td></tr>';
+					}
+					tmp +='</table>';
+					$("#selectrows").html(tmp);
+				}, 
+				function(error){
+					alert("Response Fail!="+error);	
+				});
+			}
+		});
+
+		</script>
+	</body>
+</html>

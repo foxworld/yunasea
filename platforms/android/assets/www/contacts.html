@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Contacts Example</title>
+	</head>
+	<body>
+		<div><h1>Contacts Example</h1></div>
+		<div>
+			<p>검색명(이름,전화번호,주소): <input type="text" id="findname" name="findname" value="너는누구냐"></p>
+			<p><input type="button" id="find" name="button" value="FIND"></p>
+			<p><input type="button" id="opencontacts" name="button" value="OPEN CONTACTS"></p>
+		</div>
+		<div id="contactrows"></div>
+	
+		<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+		$( document ).ready(function() {
+			$( "#contactrows" ).on( "click", "a", function(e) {
+				console.log($(this).text());
+			});			
+	
+			$( "#find" ).click(function() {
+				console.log( "contacts click" );
+
+				var options      = new ContactFindOptions();
+				options.filter   = $("#findname").val();
+				options.multiple = true;
+				options.desiredFields = [navigator.contacts.fieldType.id, navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name, navigator.contacts.fieldType.addresses, navigator.contacts.fieldType.phoneNumbers]; // 원하는필드만 object 생성하기
+				var filter = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.addresses, navigator.contacts.fieldType.phoneNumbers];
+				//var filter = ["displayName", "addresses", "phoneNumbers"];
+				navigator.contacts.find(filter, 
+				function(contacts) {
+					$( "#contactrows" ).empty();
+					alert('Found ' + contacts.length + ' contacts.');
+					for (var i = 0; i < contacts.length; i++) {
+						console.log( JSON.stringify( contacts[i] ) );
+						viewContact(contacts[i]);
+					}
+				}, 
+				function(err) {
+					alert('find Error='+err);
+				}, options);			
+				
+			});
+			
+			$("#opencontacts").click(function() {
+				navigator.contacts.pickContact(function(contact){
+					console.log( JSON.stringify( contact ) );
+					$( "#contactrows" ).empty();
+					viewContact(contact);
+				},function(err){
+					alert('pickContact Error: ' + err);
+				});
+			});
+
+			function viewContact(contact) {
+				var tmp="";
+				tmp += "<div><span>name: " + contact.displayName + 
+					"</span>,<span>count: " + contact.phoneNumbers.length + "</span></div>";
+				for (var j = 0; j < contact.phoneNumbers.length; j++) {
+					tmp += "<div><span>" +
+						"Type: " + contact.phoneNumbers[j].type  + "</span>,<span>" +
+						"Value:<a href='tel:"+ contact.phoneNumbers[j].value +"'>" + contact.phoneNumbers[j].value + "</a></span></div>";
+    		}
+				$( "#contactrows" ).append( tmp );
+			}
+		
+		});
+
+		</script>
+	</body>
+</html>

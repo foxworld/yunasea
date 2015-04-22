@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Dialogs Example</title>
+	</head>
+	<body>
+		<div><h1>Dialogs Example</h1></div>
+		<div><p><input type="button" id="alert" name="button" value="ALERT"></p></div>
+		<div><p><input type="button" id="confirm" name="button" value="CONFIRM"></p></div>
+		<div><p><input type="button" id="prompt" name="button" value="PROMPT"></p></div>
+		<div><p><input type="button" id="beep" name="button" value="BEEP"></p></div>
+		<div><p><input type="button" id="vibrate" name="button" value="VIBRATE"></p></div>
+	
+		<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+		$( document ).ready(function() {
+			$( window ).load(function() {
+				console.log("load");
+			});			
+
+			document.addEventListener("deviceready", onDeviceReady, false);
+			function onDeviceReady() {
+				console.log(navigator.notification);
+			}			
+			
+			$("#alert").click(function() {
+				navigator.notification.alert(
+				    'You are the winner!',  // message
+				    alertDismissed,         // callback
+				    'Game Over',            // title
+				    'Done'                  // buttonName
+				);
+			});
+			function alertDismissed() {
+			    // do something
+			    console.log("alertDismissed");
+			}
+			$("#confirm").click(function() {
+				navigator.notification.confirm(
+			    'You are the winner!', // message
+			     onConfirm,            // callback to invoke with index of button pressed
+			    'Game Over',           // title
+			    ['Restart','Exit']     // buttonLabels
+				);
+			});
+			function onConfirm(buttonIndex) {
+			    // do something
+			    console.log("onConfirm="+buttonIndex);
+			}
+			$("#prompt").click(function() {
+				navigator.notification.prompt(
+			    'Please enter your name',  // message
+			    onPrompt,                  // callback to invoke
+			    'Registration',            // title
+			    ['Ok','Exit'],             // buttonLabels
+			    '홍길동'                     // defaultText
+				);
+			});
+			function onPrompt(results) {
+				alert("You selected button number " + results.buttonIndex + " and entered " + results.input1);
+			}
+					
+			$("#beep").click(function() {
+				console.log("beep");
+				navigator.notification.beep(2);
+			});
+			
+			$("#vibrate").click(function() {
+				console.log("vibrate");
+				//navigator.vibrate(2000);
+
+				// Vibrate for 1 second
+				// Wait for 1 second
+				// Vibrate for 3 seconds
+				// Wait for 1 second
+				// Vibrate for 5 seconds				
+				navigator.vibrate([1000, 1000, 3000, 1000, 5000]);
+			});
+			
+
+		});
+
+		</script>
+	</body>
+</html>

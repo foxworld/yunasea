@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Network States Example</title>
+	</head>
+	<body>
+		<div><h1>Network States Example</h1></div>
+		<p><input type="button" id="network" name="button" value="Network States"></p>
+		<div id="display"></div>
+
+		<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+		$( document ).ready(function() {
+			$( window ).load(function() {
+		    				
+				$( document ).bind("offline", function() {
+					$("#display").append("<div>Network States: offline</div>");
+					$("#network").click();
+					console.log("offline");
+					
+				});
+				$( document ).bind("online", function() {
+					$("#display").append("<div>Network States: online</div>");
+					$("#network").click();
+					console.log("online");
+				});
+			});
+			$("#network").click(function() {
+				var networkState = navigator.connection.type;
+		    var states = {};
+		    states[Connection.UNKNOWN]  = 'Unknown connection';
+		    states[Connection.ETHERNET] = 'Ethernet connection';
+		    states[Connection.WIFI]     = 'WiFi connection';
+		    states[Connection.CELL_2G]  = 'Cell 2G connection';
+		    states[Connection.CELL_3G]  = 'Cell 3G connection';
+		    states[Connection.CELL_4G]  = 'Cell 4G connection';
+		    states[Connection.CELL]     = 'Cell generic connection';
+		    states[Connection.NONE]     = 'No network connection';
+		    $("#display").append("<div>Connection type:"+states[networkState]+"</div>");
+			});				
+
+		});
+		</script>
+	</body>
+</html>

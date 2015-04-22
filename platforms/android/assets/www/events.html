@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>Event Example</title>
+	</head>
+	<body>
+		<div><h1>Event Example</h1></div>
+		<div><p><input type="button" id="close" name="button" value="close"></p></div>
+		<div id="display"></div>
+	
+		<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+		$( document ).ready(function() {
+			$( window ).load(function() {
+				console.log("load");
+				document.addEventListener("pause", onPause, false);
+				document.addEventListener("resume", onResume, false);
+				document.addEventListener("menubutton", onMenuKeyDown, false);
+				document.addEventListener("searchbutton", onSearchKeyDown, false);
+				document.addEventListener("startcallbutton", onStartCallKeyDown, false);
+				document.addEventListener("endcallbutton", onEndCallKeyDown, false);
+				$( document ).bind("volumedownbutton", function() {
+					$("#display").append("<div>onVolumeDownKeyDown</div>");
+					console.log("onVolumeDownKeyDown");
+				});
+				$( document ).bind("volumeupbutton", function() {
+					$("#display").append("<div>onVolumeUpKeyDown</div>");
+					console.log("onVolumeUpKeyDown");
+				});
+				$( document ).bind("backbutton", function() {
+					$("#display").append("<div>onBackButton</div>");
+					console.log("onBackButton");
+				});
+			});			
+			$("#close").click(function(e){
+				//e.preventDefault();
+				//navigator.app.exitApp();	
+				
+				$( document ).unbind("backbutton");
+				console.log("unbind onBackButton");
+				$( document ).unbind("volumeupbutton");
+				console.log("unbind volumeupbutton");
+				$( document ).unbind("volumedownbutton");
+				console.log("unbind volumedownbutton");
+				$( document ).unbind("pause");
+				console.log("unbind pause");
+				$( document ).unbind("resume");
+				console.log("unbind resume");
+				$( document ).unbind("menubutton");
+				console.log("unbind menubutton");
+				$( document ).unbind("searchbutton");
+				console.log("unbind searchbutton");
+				$( document ).unbind("startcallbutton");
+				console.log("unbind startcallbutton");
+				$( document ).unbind("endcallbutton");
+				console.log("unbind endcallbutton");
+				$( document ).unbind("endcallbutton");
+				console.log("unbind endcallbutton");
+				
+				e.preventDefault();
+				navigator.app.backHistory();
+			});
+			
+			function onPause() {
+				console.log("onPause");
+				$("#display").append("<div>onPause</div>");
+			}
+			function onResume() {
+				console.log("onResume");
+				$("#display").append("<div>onResume</div>");
+			}
+			function onBackButton() {
+				console.log("onBackButton");
+				$("#display").append("<div>onBackButton</div>");
+			}
+			function onMenuKeyDown() {
+    		// Handle the back button
+    		$("#display").append("<div>onMenuKeyDown</div>");
+    		console.log("onMenuKeyDown");
+			}			
+			function onSearchKeyDown() {
+				// Handle the search button
+				$("#display").append("<div>onSearchKeyDown</div>");
+				console.log("onSearchKeyDown");
+			}
+			function onStartCallKeyDown() {
+				// Handle the start call button
+				$("#display").append("<div>onStartCallKeyDown</div>");
+				console.log("onStartCallKeyDown");
+			}			
+			function onEndCallKeyDown() {
+				// Handle the end call button
+				$("#display").append("<div>onEndCallKeyDown</div>");
+				console.log("onEndCallKeyDown");
+			}
+
+		});
+		</script>
+	</body>
+</html>

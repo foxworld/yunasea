@@ -1,0 +1,80 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>File Transfer Example</title>
+	</head>
+	<body>
+		<div><h1>Upload File Example</h1></div>
+		<div><p><input type="button" id="fileupload" name="button" value="FILE UPLOAD"></p></div>
+		<div>
+			<p id="ImageURI"></p>
+			<p id="code"></p>
+			<p id="Response"></p>
+			<p id="Sent"></p>
+		</div>
+		<div><img id="image_date" style="width: 100%;max-height: 100%"></div>
+		
+		<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+		$( document ).ready(function() {
+			// device APIs are available
+			//
+			function onDeviceReady() {
+				// Retrieve image file location from specified source
+				navigator.camera.getPicture(
+					uploadPhoto,
+					function(message) { 
+						alert('get picture failed'); },
+						{	quality         : 100,
+							destinationType : navigator.camera.DestinationType.FILE_URI,
+							sourceType      : navigator.camera.PictureSourceType.CAMERA,
+							encodingType    : navigator.camera.EncodingType.JPEG
+						}
+				);
+			}
+			
+			function uploadPhoto(imageURI) {
+				var options = new FileUploadOptions();
+	
+				console.log("imageURI="+imageURI);
+				$("#ImageURI").html("ImageURI = " + imageURI);
+				$("#image_date").attr("src", imageURI);
+				
+				options.fileKey="file_name";
+				options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+				options.mimeType="image/jpeg";
+				
+				var params = {};
+				params.value1 = "abcdefghijklmnopqrstuvwxyz";
+				params.value2 = "안녕하세요!!";
+				options.params = params;
+
+				var ft = new FileTransfer();
+				ft.upload(imageURI, encodeURI("http://210.181.28.119:7003/lhk/lhk_file_upload.jsp"), onSuccess, onFail, options);
+			}
+			
+			function onSuccess(r) {
+				console.log("Code = " + r.responseCode);
+				console.log("Response = " + r.response);
+				console.log("Sent = " + r.bytesSent);
+				$("#Code").html("Code = " + r.responseCode);
+				$("#Response").html("Response = " + r.response);
+				$("#Sent").html("Sent = " + r.bytesSent);
+			}
+			
+			function onFail(error) {
+				alert("An error has occurred: Code = " + error.code);
+				console.log("upload error source " + error.source);
+				console.log("upload error target " + error.target);
+			}
+			
+			$( "#fileupload" ).click(function() {
+				console.log( "fileupload click" );
+				onDeviceReady();
+			});
+		});        
+
+		</script>
+	</body>
+</html>
