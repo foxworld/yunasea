@@ -17,9 +17,9 @@ import android.widget.Toast;
  * Created by PeterLEE on 2015-04-22.
  */
 public class NoticesActivity extends Activity {
-    private WebView wvNotices = null;
+    WebView wvNotices = null;
     String sErrorURL = null;
-    public static ProgressBar progressBar = null;
+    public static ProgressBar pBar = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,9 +27,10 @@ public class NoticesActivity extends Activity {
         setContentView(R.layout.activity_notices);
 
         wvNotices = (WebView)findViewById(R.id.wv_notices);
-        wvNotices.clearHistory();
-        wvNotices.clearCache(true);
-        wvNotices.setWebChromeClient(new AndroidWebChromeClient(this, progressBar));
+        pBar = (ProgressBar) this.findViewById(R.id.progress_bar_notices);
+        //wvNotices.clearHistory();
+        //wvNotices.clearCache(true);
+        wvNotices.setWebChromeClient(new AndroidWebChromeClient(this, pBar));
         wvNotices.getSettings().setJavaScriptEnabled(true);
         //wvNotices.addJavascriptInterface(new AndroidJavascriptInterface(this), "android"); // Web에서 App 실행하기
         wvNotices.getSettings().setBuiltInZoomControls(true);
@@ -47,13 +48,13 @@ public class NoticesActivity extends Activity {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            progressBar.setVisibility(View.GONE);
+            pBar.setVisibility(View.GONE);
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            progressBar.setVisibility(View.VISIBLE);
+            pBar.setVisibility(View.VISIBLE);
         }
 
         @Override
