@@ -38,6 +38,17 @@ public class NoticesActivity extends Activity {
         wvNotices.loadUrl(getString(R.string.notices_url));
 
     }
+
+    @Override
+    public void onBackPressed() {
+        if(wvNotices.canGoBack()) {
+            wvNotices.goBack();
+        }
+        else {
+            finish();
+        }
+    }
+
     class NoticesWebViewClient extends WebViewClient {                          // 자기 자신 브라우져에 띄우기 위해  추가
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
