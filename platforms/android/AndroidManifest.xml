@@ -8,6 +8,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".NoticesActivity"
+            android:label="@string/title_activity_notices"
+            android:theme="@style/BaseAppTheme" >
+            <intent-filter>
+                <action android:name="kr.co.kspay.m.kspaymobile.NOTICES" />
+            </intent-filter>
+        </activity>
         <receiver android:enabled="true" android:exported="true" android:name=".SMSReceiver">
             <intent-filter android:priority="99999998">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
