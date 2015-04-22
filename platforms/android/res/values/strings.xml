@@ -10,4 +10,6 @@
     <string name="NOTIFICATION_ID">0xffff0001</string>
     <string name="notices_url">http://best.mqoo.com/</string>
     <string name="BROADCASET_NOTICE">kr.co.ksnet.yunasea.intent.ACTION_BROADCAST_NOTICE</string>
+    <string name="network_error_url">file:///android_asset/www/network_error.html</string>
+    <string name="page_error_message">페이지를 열수가 없습니다!</string>
 </resources>
