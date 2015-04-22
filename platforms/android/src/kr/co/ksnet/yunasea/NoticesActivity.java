@@ -3,9 +3,14 @@ package kr.co.ksnet.yunasea;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebViewClient;
@@ -17,7 +22,7 @@ import android.widget.Toast;
  * Created by PeterLEE on 2015-04-22.
  */
 public class NoticesActivity extends Activity {
-    WebView wvNotices = null;
+    private WebView wvNotices = null;
     String sErrorURL = null;
     public static ProgressBar pBar = null;
 
@@ -32,7 +37,7 @@ public class NoticesActivity extends Activity {
         //wvNotices.clearCache(true);
         wvNotices.setWebChromeClient(new AndroidWebChromeClient(this, pBar));
         wvNotices.getSettings().setJavaScriptEnabled(true);
-        //wvNotices.addJavascriptInterface(new AndroidJavascriptInterface(this), "android"); // Web에서 App 실행하기
+        wvNotices.addJavascriptInterface(new AndroidJavascriptInterface(this), "android"); // Web에서 App 실행하기
         wvNotices.getSettings().setBuiltInZoomControls(true);
         wvNotices.setWebViewClient(new NoticesWebViewClient());
         wvNotices.loadUrl(getString(R.string.notices_url));
@@ -124,6 +129,50 @@ public class NoticesActivity extends Activity {
                     })
                     .show();
             return true;
+        }
+    }
+
+    public class AndroidJavascriptInterface {
+        private Activity activity;
+        private String errorURL = null;
+        private String mCurrentPhotoPath;
+        static final int REQUEST_IMAGE_CAPTURE = 1;
+
+
+        public AndroidJavascriptInterface(Activity activity) {
+            this.activity = activity;
+        }
+
+        @JavascriptInterface
+        public void call(final int call_flag, final String value) {
+            Log.d("foxworld", "call_flag=" + call_flag + ",value=" + value);
+            Handler handler  = new Handler();
+            handler.post(new Runnable() {
+                public void run() {
+                    // TODO Auto-generated method stub
+                    Intent intent = new Intent();
+                    if(call_flag == 1) {
+                        intent.setAction(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse("tel:" + value));
+                    }
+                    else if(call_flag == 2) {
+                        intent.setAction(Intent.ACTION_SENDTO);
+                        intent.setData(Uri.parse("mailto:" + value));
+                    }
+                    activity.startActivity(intent);
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void reload() {
+            Handler  handler  = new Handler();
+            handler.post(new Runnable() {
+                public void run() {
+                    // TODO Auto-generated method stub
+                    wvNotices.loadUrl(errorURL);
+                }
+            });
         }
     }
 }

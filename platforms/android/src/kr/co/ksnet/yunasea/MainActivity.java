@@ -72,6 +72,9 @@ public class MainActivity extends CordovaActivity
                     intent = new Intent(MainActivity.this, NoticesActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.menu_yunasea:
+                loadUrl(getString(R.string.yunasea_url1));
+                break;
             default:
                 break;
         }

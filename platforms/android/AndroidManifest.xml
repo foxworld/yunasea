@@ -8,7 +8,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/title_activity_notices" android:name=".NoticesActivity" android:theme="@style/BaseAppTheme">
+        <activity android:label="@string/title_activity_notices" android:name=".NoticesActivity" android:theme="@android:style/Theme.Black.NoTitleBar">
             <intent-filter>
                 <action android:name="kr.co.ksnet.yunasea.NOTICES" />
             </intent-filter>
